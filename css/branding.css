@@ -1,0 +1,458 @@
+/*
+ * AGB (Africa & Gulf Bank Tanzania) premium branded shell.
+ * Colors below are the exact values from the bank's brand swatch:
+ *   AGB Blue       RGB 37 54 144   #253690
+ *   AGB Red        RGB 255 0 0     #FF0000
+ *   AGB Black      RGB 0 0 0       #000000
+ *   AGB Light Grey RGB 140 153 161 #8C99A1
+ *   AGB Dark Grey  RGB 109 110 113 #6D6E71
+ * Blue is the dominant color (as in the logo); red is used only as a small,
+ * deliberate accent (a border line, a badge, an icon fill) — mirroring how
+ * the logo itself uses red for just the small triangle, not as a fill color.
+ *
+ * This file only styles the chrome around the slideshow (header, forex
+ * panel, ad panel, ticker, footer) — player.css still owns the slideshow
+ * stage itself. Root font-size scales with viewport width via clamp() so
+ * every panel (sized in rem) scales together across 1366x768 through
+ * 3840x2160 without a wall of breakpoints.
+ */
+
+:root {
+  --agb-blue: #253690;
+  --agb-blue-light: #4a58b0;
+  --agb-navy-900: #1b2668;
+  --agb-navy-950: #11173f;
+  --agb-red: #ff0000;
+  --agb-red-deep: #c40000;
+  --agb-grey-light: #8c99a1;
+  --agb-grey-dark: #6d6e71;
+  --agb-black: #000000;
+  --agb-white: #ffffff;
+  --agb-offwhite: #f5f6f8;
+  --agb-text-dark: #1a1a1a;
+  --agb-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --agb-radius: 1rem;
+}
+
+html {
+  /* ~14px at 1366px wide, ~17px at 1920px, ~26px (capped) at 3840px+ */
+  font-size: clamp(14px, 0.9vw, 26px);
+}
+
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--agb-white);
+}
+
+#appShell {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  background: var(--agb-navy-950);
+  overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+
+#topHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.7rem 1.75rem;
+  background: linear-gradient(120deg, var(--agb-navy-950), var(--agb-blue));
+  border-bottom: 3px solid var(--agb-red);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.header-logo {
+  flex: none;
+  height: 2.6rem;
+  width: auto;
+  display: block;
+  /* the source PNG has a transparent background, so it drops straight onto
+     the navy header with no card/wrapper needed */
+}
+
+.header-brand {
+  min-width: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+  padding-left: 1rem;
+}
+
+.bank-tagline {
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--agb-white);
+  letter-spacing: 0.02em;
+}
+
+.header-nav {
+  flex: 1;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+}
+
+.header-clock {
+  flex: none;
+  text-align: right;
+}
+
+.clock-time {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--agb-white);
+}
+
+.clock-date {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 0.15rem;
+}
+
+/* ---------- Main row: forex | slideshow | ads ---------- */
+
+#mainRow {
+  display: grid;
+  grid-template-columns: 15rem 1fr 17rem;
+  min-height: 0;
+  min-width: 0;
+}
+
+#stageWrap {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.panel {
+  min-height: 0;
+  overflow: hidden;
+  padding: 1.1rem 1rem;
+  background: linear-gradient(165deg, var(--agb-navy-900), var(--agb-navy-950));
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Forex panel ---------- */
+
+.forex-panel {
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--agb-white);
+}
+
+.panel-subtitle {
+  font-size: 0.7rem;
+  color: var(--agb-grey-light);
+  margin-top: 0.15rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 2px solid var(--agb-red);
+}
+
+.forex-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.68rem;
+  table-layout: fixed;
+}
+
+.forex-table thead th {
+  text-align: right;
+  font-weight: 600;
+  color: var(--agb-grey-light);
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.forex-table thead th:first-child { text-align: left; }
+
+.forex-row td {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--agb-white);
+  line-height: 1.15;
+}
+
+.forex-currency {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+.forex-flag { font-size: 0.9rem; flex: none; }
+
+.forex-flag-img {
+  flex: none;
+  width: 1.35rem;
+  height: 1.0125rem; /* 4:3, matches the bundled flag assets */
+  object-fit: cover;
+  border-radius: 0.15rem;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.forex-buy, .forex-sell {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes forexFlash {
+  0% { background: rgba(255, 0, 0, 0.22); }
+  100% { background: transparent; }
+}
+.forex-flash { animation: forexFlash 1.2s ease-out; }
+
+.forex-section-label {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--agb-grey-light);
+  margin: 0.75rem 0 0.4rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.forex-instructions {
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 2px solid var(--agb-red);
+}
+
+.forex-instructions-note {
+  font-size: 0.6rem;
+  line-height: 1.4;
+  color: var(--agb-grey-light);
+}
+
+.forex-instructions-note strong { color: var(--agb-white); }
+
+.forex-updated {
+  font-size: 0.6rem;
+  color: var(--agb-grey-light);
+  margin-top: 0.5rem;
+}
+
+/* ---------- Advertisement panel ---------- */
+
+.ad-panel {
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.ad-card {
+  border-radius: var(--agb-radius);
+  padding: 1.1rem;
+  box-shadow: var(--agb-shadow);
+  background-size: cover;
+  background-position: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+.ad-card-digital {
+  background: linear-gradient(155deg, var(--agb-offwhite), #e7e9ee);
+  color: var(--agb-text-dark);
+}
+
+.ad-card-future {
+  background: linear-gradient(155deg, var(--agb-blue), var(--agb-navy-950));
+  color: var(--agb-white);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.ad-title {
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 0.3rem;
+}
+
+.ad-card-digital .ad-title { color: var(--agb-blue); }
+.ad-card-future .ad-title { color: var(--agb-white); }
+
+.ad-subtitle {
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.85;
+}
+
+.ad-services {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ad-services li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--agb-text-dark);
+}
+
+.ad-service-icon {
+  flex: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--agb-red);
+  color: var(--agb-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.ad-cta {
+  margin-top: 0.75rem;
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--agb-white);
+  background: var(--agb-red);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+}
+
+/* ---------- News ticker ---------- */
+
+#newsTicker {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, var(--agb-navy-900), var(--agb-blue));
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  height: 2.3rem;
+  overflow: hidden;
+}
+
+.ticker-label {
+  flex: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  background: var(--agb-red);
+  color: var(--agb-white);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ticker-viewport {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker-track {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  will-change: transform;
+  animation: tickerScroll linear infinite;
+  animation-duration: 30s; /* overwritten per-content by newsTicker.js */
+}
+
+.ticker-item {
+  padding-right: 4rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  color: var(--agb-white);
+}
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Footer ---------- */
+
+#bottomFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.6rem 1.75rem;
+  background: linear-gradient(120deg, var(--agb-navy-950), var(--agb-blue));
+  border-top: 3px solid var(--agb-red);
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-branches {
+  font-weight: 700;
+  color: var(--agb-white);
+}
+
+.footer-contact strong { color: var(--agb-white); }
+
+.footer-website { color: rgba(255, 255, 255, 0.8); }
+
+.footer-right {
+  flex: none;
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--agb-white);
+  white-space: nowrap;
+}
+
+/* ---------- Narrower displays (e.g. 1366x768) ---------- */
+
+@media (max-width: 1440px) {
+  #mainRow { grid-template-columns: 13rem 1fr 15rem; }
+  .header-nav { display: none; }
+}

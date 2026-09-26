@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>AGB Digital Signage Player</title>
+  <!--
+    By default the player calls the backend at the same origin it is served from.
+    If the player is hosted separately from the API (e.g. served as static files
+    on the Android TV box while the API runs elsewhere), set the API origin here:
+  -->
+  <meta name="ds-api-base" content="" />
+  <link rel="stylesheet" href="css/player.css" />
+  <link rel="stylesheet" href="css/branding.css" />
+</head>
+<body>
+  <!--
+    AGB branded shell around the existing slideshow engine. Nothing about
+    pairing/sync/playback logic changes here — #stage and #idleScreen are
+    the exact same elements player.js/main.js already control, just moved
+    one level deeper into #stageWrap so the surrounding panels have room.
+    All content in the header/forex panel/ad panel/ticker/footer is driven
+    by js/config.js — edit that one file to change branding text, forex
+    rates, ticker messages, or the two advertisement cards, or later swap
+    its functions for real API calls without touching this markup.
+  -->
+  <div id="appShell">
+    <header id="topHeader">
+      <div class="header-left">
+        <img class="header-logo" src="assets/agb-logo-horizontal.png" alt="Africa &amp; Gulf Bank (Tanzania) Limited" />
+        <div class="header-brand">
+          <div class="bank-tagline">Together We Grow</div>
+        </div>
+      </div>
+      <nav class="header-nav" aria-hidden="true">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;SOLUTIONS&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</nav>
+      <div class="header-clock">
+        <div id="clockTime" class="clock-time">--:--</div>
+        <div id="clockDate" class="clock-date">-- ------- ----</div>
+      </div>
+    </header>
+
+    <div id="mainRow">
+      <aside id="forexPanel" class="panel forex-panel">
+        <h2 class="panel-title">Forex Rates</h2>
+        <p class="panel-subtitle">Indicative Rates (TZS)</p>
+        <table class="forex-table">
+          <thead>
+            <tr><th>Currency</th><th>Buying</th><th>Selling</th></tr>
+          </thead>
+          <tbody id="forexTableBody"></tbody>
+        </table>
+
+        <p class="forex-section-label">Denominations Below 50</p>
+        <table class="forex-table">
+          <thead>
+            <tr><th>Currency</th><th>Buying</th><th>Selling</th></tr>
+          </thead>
+          <tbody id="forexSmallTableBody"></tbody>
+        </table>
+
+        <div class="forex-instructions" id="forexInstructions"></div>
+        <p class="forex-updated">Last updated: <span id="forexUpdatedAt">--:--</span></p>
+      </aside>
+
+      <!-- Fullscreen playback surface: same #stage/#idleScreen player.js has always
+           controlled, now constrained to this cell instead of the whole viewport. -->
+      <div id="stageWrap">
+        <div id="stage" class="stage" hidden>
+          <div id="layerA" class="layer"></div>
+          <div id="layerB" class="layer"></div>
+          <div id="statusBadge" class="status-badge"></div>
+        </div>
+
+        <div id="idleScreen" class="idle-screen" hidden>
+          <div class="idle-card">
+            <div class="logo">DS</div>
+            <p>Connected — waiting for a playlist to be assigned to this device.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside id="adPanel" class="panel ad-panel" aria-live="off"></aside>
+    </div>
+
+    <div id="newsTicker">
+      <div class="ticker-label">Latest News</div>
+      <div class="ticker-viewport">
+        <div class="ticker-track" id="tickerTrack"></div>
+      </div>
+    </div>
+
+    <footer id="bottomFooter">
+      <div class="footer-left">
+        <div class="footer-branches">Our Branches</div>
+        <div class="footer-contact">Customer Care&nbsp; <strong>+255 677 100 944</strong></div>
+        <div class="footer-website">www.bankagb.co.tz</div>
+      </div>
+      <div class="footer-right">Together We Grow</div>
+    </footer>
+  </div>
+
+  <!-- Pairing screen: shown until this device has registered with the server.
+       Kept as a full-screen overlay (covers the branded shell too) since it
+       only ever appears during initial setup, before any content exists. -->
+  <div id="pairingScreen" class="pairing-screen" hidden>
+    <div class="pairing-card">
+      <div class="logo">DS</div>
+      <h1>Digital Signage Player</h1>
+      <p class="subtitle">Enter the pairing code shown in the admin portal to connect this TV.</p>
+      <form id="pairingForm">
+        <input id="pairingCodeInput" class="code-input" maxlength="9" placeholder="XXXX-XXXX" autocomplete="off" autocapitalize="characters" required />
+        <button type="submit" class="btn">Pair This Device</button>
+      </form>
+      <p id="pairingError" class="error" hidden></p>
+      <p class="hint">Ask your administrator to generate a pairing code from Devices → Register New TV.</p>
+    </div>
+  </div>
+
+  <script src="js/fullscreen.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/forexPanel.js"></script>
+  <script src="js/adPanel.js"></script>
+  <script src="js/newsTicker.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/pairing.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/heartbeat.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
